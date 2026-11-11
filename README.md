@@ -7,13 +7,13 @@ One button, one joke. Press it and it fetches a dad joke from
 
 ## Stack
 
-Plain HTML, CSS and JavaScript. No framework, no build step, no dependencies —
-an `index.html`, a `main.css` and about thirty lines in `main.js`, deployed to
-GitHub Pages.
+Plain HTML, CSS and JavaScript. No framework, no build step, no dependencies.
+It is an `index.html`, a `main.css` and about thirty lines in `main.js`, deployed
+to GitHub Pages.
 
 ## The point of it
 
-The interesting part is not the punchline, it is the request.
+The interesting part is the request.
 
 `icanhazdadjoke` returns **HTML by default** and only returns JSON if you ask
 for it:
@@ -34,29 +34,27 @@ async function generateJoke() {
 ```
 
 Drop that `Accept` header and you get a page of markup where you expected an
-object — with a `200 OK` status and nothing in the response to explain why
-`response.json()` just threw. It is a good early lesson that a URL is not an
-API: the headers are part of the contract.
+object. The status is `200 OK` and nothing in the response explains why
+`response.json()` threw. A URL is not an API: the headers are part of the
+contract.
 
 ## Both versions are kept
 
 `main.js` still carries the original `.then` chain, commented out, directly
 above the `async/await` rewrite that replaced it. Reading them next to each
-other is the clearest illustration of what `await` actually removes, so it is
-left in rather than tidied away.
+other shows what `await` removes, so I left it in.
 
 ## Known limitations
 
 - **No error handling.** There is no `try/catch` and no `response.ok` check. If
   the request fails, the promise rejects into nothing and the button silently
-  does nothing — from the user's side, indistinguishable from a broken page.
+  does nothing, which looks the same as a broken page to the user.
   Wrapping the call and writing the failure into the same element the joke
-  would have filled is two lines and makes the interface honest about its
-  state.
+  would have filled takes two lines.
 - **No loading state.** A slow response leaves the previous joke on screen with
   no indication that a new one is coming.
 - **`innerHTML` for a string that could contain markup.** `textContent` is the
-  correct choice here; the API is trusted, but the habit is not.
+  better choice here. The API is trusted, but the habit is not.
 
 ## Running locally
 
